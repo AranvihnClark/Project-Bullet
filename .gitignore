@@ -70,3 +70,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Files too big for Github
+/[Aa]ssets/[Tt]extMesh Pro/[Ff]onts/ThaleahFat_TTF.asset
+/[Aa]ssets/[Tt]extMesh Pro/[Ff]onts/ThaleahFat_TTF.asset.meta
