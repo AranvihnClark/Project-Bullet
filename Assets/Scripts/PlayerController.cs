@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,8 +13,6 @@ namespace Players
         [SerializeField] float movementSpeed = 15f;
         [SerializeField] float jumpVelocityFactor = 28f;
         [SerializeField] LayerMask jumpableGround;
-        // [SerializeField] private GameObject gun;
-        // [SerializeField] public GameObject sword;
 
 
         // To determine which weapon above is being held at the moment (for tossing and attacking)
@@ -33,6 +32,9 @@ namespace Players
             {
                 Debug.Log("Client " + OwnerClientId + ": Weapon Changed!");
             };*/
+
+            AddPlayerToListServerRpc(GetComponent<NetworkObject>());
+
         }
 
         private void Update()
@@ -69,7 +71,7 @@ namespace Players
             // Test Key
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                GlobalData.KickPlayer();
+                GameObject.Find("Global Data").GetComponent<GlobalData>().StartGame();
             }
 
             // Movement
@@ -80,6 +82,18 @@ namespace Players
             {
                 doubleJump = 0;
             }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void AddPlayerToListServerRpc(NetworkObjectReference player)
+        {
+            AddPlayerToListClientRpc(player);
+        }
+
+        [ClientRpc]
+        private void AddPlayerToListClientRpc(NetworkObjectReference player)
+        {
+            GlobalData.playerList[GlobalData.playerList.Length - 1] = player;
         }
 
         private void MovePlayer()
